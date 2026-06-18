@@ -1,0 +1,16 @@
+sources:
+  - name: nasaNEO
+    handler:
+      jsonSchema:
+        endpoint: https://api.nasa.gov/neo/rest/v1/feed
+        method: GET
+        operationHeaders:
+          User-Agent: GraphQL-Mesh
+
+transforms:
+  - flatten:
+      depth: 1
+
+additionalResolvers:
+  - targetTypeName: Query
+    targetFieldName: nearEarthObjects

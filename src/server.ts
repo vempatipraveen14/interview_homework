@@ -7,6 +7,17 @@ import plugins from './envelop';
 
 const yogaPort = 4000;
 
+// Simple NASA API wrapper using built-in fetch
+const nasaApiWrapper = async (startDate: string, endDate: string) => {
+  const response = await fetch(
+    `https://api.nasa.gov/neo/rest/v1/feed?start_date=${startDate}&end_date=${endDate}&api_key=DEMO_KEY`
+  );
+  if (!response.ok) {
+    throw new Error(`NASA API error: ${response.statusText}`);
+  }
+  return response.json();
+};
+
 (() => {
   const schema = genSchema();
   const yoga = createYoga({
@@ -20,6 +31,8 @@ const yogaPort = 4000;
       return {
         requestId: uuid(),
         client,
+        // Provide NASA API wrapper through context for resolvers to use
+        nasaApi: nasaApiWrapper,
       };
     },
   });
